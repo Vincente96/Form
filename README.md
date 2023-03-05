@@ -1,2 +1,2 @@
 # Form
-This is a form with laravel , complete with validation custom and simple validation
+This is a form with laravel , where I use the fortify package. 
