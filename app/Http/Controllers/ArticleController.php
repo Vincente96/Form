@@ -49,7 +49,17 @@ class ArticleController extends Controller
         // }
 
             //  secondo metodo di scrittura su db con attributi protected $fillable ['category',...] in model article
-        Article::create($request->all());
+
+        $article =  Article::create($request->all());
+        
+         if ($request->hasFile('image')&& $request->file('image')->isValid()){
+
+            $fileext= $request -> file('image')-> extension();    
+            $randomFileName =date('Y_m-d'). uniqid('image') . '.' . $fileext;
+            $imagePath = $request-> file('image')-> storeAs('public/images/' . $article->id , $randomFileName);
+            $article-> image= $imagePath;
+            $article ->save();
+         }
 
         return redirect()->route('articles.create')->with(['success'=>'articolo salvato correttamente']);
     }

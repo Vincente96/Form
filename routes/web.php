@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +15,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// sezione privata
 
-Route::get('/', [ArticleController::class,'Homepage'])->name('welcome');
-Route::get('/articles/create',[ArticleController::class, 'create'])->name('articles.create');
-Route::post('/articles/store',[ArticleController::class,'store'])->name("articles.store");
+Route::middleware('auth')->prefix('account')->group(function ()  { 
+    Route::get('/',[AccountController::class,'index'])->name ('account.index');
+    Route::get('/Homepage', [ArticleController::class,'Homepage'])->name('welcome');
+    Route::get('/articles/create',[ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/articles/store',[ArticleController::class,'store'])->name("articles.store");
+});    
+
+Route::get('/',[AccountController::class,'index'])->name ('account.index');
+
+// sezione pubblica
+Route::get('/articles/{id}',[PageController::class,'detail'])->name('detail');

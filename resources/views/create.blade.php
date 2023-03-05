@@ -21,7 +21,8 @@
                     {{session('success')}}
                 </div>
                 @endif
-                <form  class="mt-4" action="{{route('articles.store')}}" method="POST">
+                <form  class="mt-4" action="{{route('articles.store')}}" method="POST"   enctype="multipart/form-data">
+                    
                     @csrf
                     <div class="row g-3">
                         <div class="col-12">
@@ -50,6 +51,11 @@
                             {{-- seconda alternativa se vogliamo visualizzare il messaggio di errore ove è necessario --}}
                             <span class="text-danger small">{{$message}}</span>     
                             @enderror
+
+                            <div class="col-12">
+                                <label for="image">Immagine</label>
+                                <input type="file" name="image" id="image" class="form-control">
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Salva</button>
                      </div>
