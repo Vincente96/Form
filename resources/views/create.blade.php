@@ -22,17 +22,30 @@
                 </div>
                 @endif
                 <form  class="mt-4" action="{{route('articles.store')}}" method="POST"   enctype="multipart/form-data">
-                    
+                
                     @csrf
                     <div class="row g-3">
                         <div class="col-12">
-                            <label for="category">Categoria</label>
-                            <input type="text" id="category" name="category" class="form-control @error('category') is-invalid @enderror" 
-                            maxlength="50" value="{{old ('category')}}">
-                            @error('category') 
-                            {{-- seconda alternativa se vogliamo visualizzare il messaggio di errore ove è necessario --}}
-                            <span class="text-danger small">{{$message}}</span>     
-                            @enderror
+                            <label for="category_id">Categoria</label>
+                            @foreach($categories as $category)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="categories[]" value="{{ $category->id }}">
+                                <label class="form-check-label">
+                                    {{ $category->name }}
+                                </label>
+                            </div>
+                            @endforeach     
+                                
+
+                            {{-- <label for="category"> Categoria</label>
+                            <select name="category_id" id="category_id" class="form-control">
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                              </select> --}}
+
+
+
                         </div>
                         <div class="col-12">
                             <label for="title">Titolo</label>
@@ -48,7 +61,6 @@
                             <label for="body">Testo</label>
                             <textarea name="body" id="body"  rows="10"class="form-control @error('category') is-invalid @enderror ">{{old('body')}}</textarea>
                             @error('body') 
-                            {{-- seconda alternativa se vogliamo visualizzare il messaggio di errore ove è necessario --}}
                             <span class="text-danger small">{{$message}}</span>     
                             @enderror
 

@@ -10,7 +10,10 @@ class PageController extends Controller
 
         $article = Article::findOrFail($id);
 
-        return view('pages.articles.detail', compact('article'));
+        return view('articles.detail', compact('article'));
+    }
 
+    public function viewcounter(){
+        return view('viewcounter');
     }
 }

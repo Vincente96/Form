@@ -11,7 +11,7 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // DA IMPOSTARE PERCHè DI DEFAULT è FALSE .!!!! 
     }
 
     /**
@@ -22,9 +22,9 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category'=> 'required|max:50',
+            // 'category_id'=> 'required|max:50',
             'title'=> 'required|max:150',
-            'body'=> 'required|max:5000'
+            'body'=> 'required|max:5000',
         ];
     }
 
@@ -32,7 +32,7 @@ class StoreArticleRequest extends FormRequest
     {
 
             return [
-                'category.required' => 'Questa categoria è richiesta'
+                
             ];
     }
     

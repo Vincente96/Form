@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
-
+        @livewireStyles
 @vite(['resources\css\app.css', 'resources\js\app.js'])
+
               
     </head>
 
@@ -14,6 +15,7 @@
         <x-navbar/>
 
         {{$slot}}
+        @livewireScripts
         
     </body>
 </html>

@@ -144,4 +144,9 @@ return [
         ]),
     ],
 
+    'redirects' => [
+        'logout' => '/account',
+        
+        
+    ],
 ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,14 +12,13 @@ class ArticleController extends Controller
 {
     public function Homepage(){
         
-        $articles= Article::all();
-
-
+        $articles= Article::where('user_id',auth()->user()->id)->get();
         return view('welcome', compact('articles'));
     }
 
     public function create () {
-        return view ('create');
+        $categories= Category::orderBy('name')->get();
+        return view ('create',compact('categories'));
     }
 
     public function store (StoreArticleRequest $request){
@@ -50,8 +50,16 @@ class ArticleController extends Controller
 
             //  secondo metodo di scrittura su db con attributi protected $fillable ['category',...] in model article
 
-        $article =  Article::create($request->all());
+            
+        $article =  Article::create([
+            'user_id' => auth()-> user()->id,
+            'category_id'=>$request-> category_id,
+            'title'=> $request -> title,
+            'body'=> $request-> body,
+        ]);
         
+        $article->categories()->attach($request->categories);
+
          if ($request->hasFile('image')&& $request->file('image')->isValid()){
 
             $fileext= $request -> file('image')-> extension();    
@@ -62,5 +70,47 @@ class ArticleController extends Controller
          }
 
         return redirect()->route('articles.create')->with(['success'=>'articolo salvato correttamente']);
+    }
+
+
+                  
+    public function edit(Article $article)
+    {
+        if($article->user_id !== auth()->user()->id) {
+            abort(403);
+        }
+
+        $categories = Category::orderBy('name')->get();
+
+        return view('articles.edit', compact('categories', 'article'));
+    }
+
+
+
+    
+    public function update(StoreArticleRequest $request, Article $article)
+    {
+        if($article->user_id !== auth()->user()->id) {
+            abort(403);
+        }
+        $article->fill($request->all())->save();
+
+        $article->categories()->detach();
+        $article->categories()->attach($request->categories);
+   
+
+        return redirect()->route('welcome')->with(['success' => 'Articolo modificato.']);
+    }
+
+
+
+    public function destroy(Article $article){
+        
+        if($article->user_id !== auth()->user()->id) {
+            abort(403);
+        }
+        $article->categories()->detach();
+        $article->delete();
+        return redirect()-> back()->with(['success'=>'Articolo eliminato con successo']);
     }
 }

@@ -1,1 +1,6 @@
 @import 'bootstrap';
+
+.container
+{
+    background-color: rgba(19, 106, 153, 0.264);
+}
